@@ -1,0 +1,2 @@
+import Hero from "@/components/hero/Hero";import StudentInquiryForm from "@/components/forms/StudentInquiryForm";import {Navbar,TrustStrip,CurriculumExplorer,HowItWorks,Modes,WhyNoor,FinalCTA,Footer} from "@/components/sections/SiteSections";
+export default function Home(){return <main><Navbar/><Hero/><TrustStrip/><CurriculumExplorer/><HowItWorks/><Modes/><WhyNoor/><StudentInquiryForm/><FinalCTA/><Footer/></main>}
