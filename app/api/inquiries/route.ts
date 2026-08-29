@@ -1,0 +1,2 @@
+import {NextResponse} from "next/server";import {studentInquirySchema} from "@/lib/schemas";
+export async function POST(request:Request){try{const body=await request.json();const result=studentInquirySchema.safeParse(body);if(!result.success)return NextResponse.json({success:false,errors:result.error.flatten()},{status:400});const reference=`NOOR-${Date.now().toString().slice(-8)}`;return NextResponse.json({success:true,reference,inquiry:result.data})}catch{return NextResponse.json({success:false,message:"Unable to process inquiry"},{status:500})}}
