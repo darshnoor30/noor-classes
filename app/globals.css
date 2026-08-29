@@ -1,0 +1,4 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+html{scroll-behavior:smooth}body{margin:0;background:#071021;color:#f8faff;font-family:Inter,Arial,Helvetica,sans-serif}*{box-sizing:border-box}::selection{background:#f4d03f;color:#071021}.noor-input{width:100%;border-radius:.9rem;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.045);padding:.95rem 1rem;color:#fff;outline:none;transition:.2s}.noor-input:focus{border-color:rgba(244,208,63,.7);box-shadow:0 0 0 3px rgba(244,208,63,.08)}.noor-input::placeholder{color:rgba(255,255,255,.28)}.noor-input option{background:#0b132b}.glass{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);backdrop-filter:blur(18px)}
