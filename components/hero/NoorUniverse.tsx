@@ -1,0 +1,10 @@
+"use client";
+import { Canvas, useFrame } from "@react-three/fiber";
+import { Float, OrbitControls, Sparkles, Text } from "@react-three/drei";
+import { Suspense, useRef } from "react";
+import * as THREE from "three";
+const boards=[{name:"CBSE",r:2.1,s:.28,c:"#F4D03F"},{name:"ICSE",r:2.75,s:-.21,c:"#7C6CFF"},{name:"IB",r:3.35,s:.17,c:"#55DDFB"},{name:"CAMBRIDGE",r:4,s:-.13,c:"#FFE88A"}];
+function Ring({r,c}:{r:number,c:string}){return <mesh rotation={[Math.PI/2,0,0]}><torusGeometry args={[r,.008,12,140]}/><meshBasicMaterial color={c} transparent opacity={.25}/></mesh>}
+function Planet({name,r,s,c,i}:{name:string;r:number;s:number;c:string;i:number}){const ref=useRef<THREE.Group>(null);useFrame(({clock})=>{const t=clock.elapsedTime*s+i*1.4;if(ref.current){ref.current.position.set(Math.cos(t)*r,Math.sin(t*1.4)*.2,Math.sin(t)*r)}});return <group ref={ref}><Float speed={2} floatIntensity={.3}><mesh><sphereGeometry args={[.18,24,24]}/><meshStandardMaterial color={c} emissive={c} emissiveIntensity={1.8}/></mesh><Text position={[0,.35,0]} fontSize={.16} color="white">{name}</Text></Float></group>}
+function Core(){const ref=useRef<THREE.Mesh>(null);useFrame(({clock})=>{if(ref.current){const s=1+Math.sin(clock.elapsedTime*2)*.04;ref.current.scale.setScalar(s)}});return <group><mesh ref={ref}><sphereGeometry args={[.72,48,48]}/><meshStandardMaterial color="#F4D03F" emissive="#F4D03F" emissiveIntensity={2.6} roughness={.15}/></mesh><pointLight intensity={35} distance={12} color="#F4D03F"/><Text position={[0,0,.76]} fontSize={.2} color="#071021">NOOR</Text></group>}
+export default function NoorUniverse(){return <div className="absolute inset-0"><Canvas camera={{position:[0,2.1,7.5],fov:45}} dpr={[1,1.4]}><Suspense fallback={null}><ambientLight intensity={.55}/><directionalLight position={[5,5,5]} intensity={2}/><Core/>{boards.map((b,i)=><group key={b.name}><Ring r={b.r} c={b.c}/><Planet {...b} i={i}/></group>)}<Sparkles count={100} scale={10} size={1.2} speed={.2} opacity={.6}/><OrbitControls enableZoom={false} enablePan={false} autoRotate autoRotateSpeed={.25}/></Suspense></Canvas></div>}
