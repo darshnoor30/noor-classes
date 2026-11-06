@@ -9,7 +9,7 @@ Premium 1-on-1 home tuition and global live online tutoring website.
 - Dynamic 7-step student/parent inquiry form
 - Home vs online conditional fields
 - Zod + React Hook Form validation
-- Tutor recruitment portal
+- Tutor recruitment contact page (online applications are not yet available)
 - Persistent student inquiry storage with Supabase
 - Instant owner email notifications with Resend
 - SEO metadata
@@ -46,3 +46,8 @@ The inquiry API validates input, saves the lead first, then attempts the email n
 
 ## Next production upgrades
 Add spam/rate-limit protection, privacy/consent pages, authenticated admin lead management, tutor document storage, and WhatsApp Business notifications.
+
+Inquiry references use UUIDs to avoid same-millisecond collisions. The server maps form fields to the lowercase PostgreSQL columns created by `supabase/schema.sql`; existing tables do not need a migration for this fix.
+
+## Verification
+Run `npm test` for isolated inquiry-route regression tests and `npm run build` for the production build and type checks. Tests mock storage and never contact production Supabase or send email. GitHub Actions runs both checks from the committed dependency lockfile.
