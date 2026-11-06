@@ -1,4 +1,5 @@
 import {NextResponse} from "next/server";
+import {randomUUID} from "node:crypto";
 import {studentInquirySchema} from "@/lib/schemas";
 
 const SUPABASE_URL=process.env.SUPABASE_URL;
@@ -11,6 +12,8 @@ function escapeHtml(value:unknown){return String(value??"").replace(/[&<>'"]/g,(
 
 async function saveInquiry(reference:string,inquiry:Record<string,unknown>){
   if(!SUPABASE_URL||!SUPABASE_SERVICE_ROLE_KEY) throw new Error("Storage is not configured");
+  // PostgreSQL folds the unquoted columns in schema.sql to lowercase.
+  const {studentName,currentScore,targetScore,parentName,preferredTime,...fields}=inquiry;
   const response=await fetch(`${SUPABASE_URL}/rest/v1/inquiries`,{
     method:"POST",
     headers:{
@@ -19,7 +22,7 @@ async function saveInquiry(reference:string,inquiry:Record<string,unknown>){
       "Content-Type":"application/json",
       Prefer:"return=minimal"
     },
-    body:JSON.stringify({reference,...inquiry})
+    body:JSON.stringify({reference,...fields,studentname:studentName,currentscore:currentScore,targetscore:targetScore,parentname:parentName,preferredtime:preferredTime})
   });
   if(!response.ok) throw new Error(`Storage failed: ${response.status}`);
 }
@@ -46,7 +49,7 @@ export async function POST(request:Request){
     const result=studentInquirySchema.safeParse(body);
     if(!result.success) return NextResponse.json({success:false,errors:result.error.flatten()},{status:400});
 
-    const reference=`NOOR-${Date.now().toString().slice(-8)}`;
+    const reference=`NOOR-${randomUUID()}`;
     const inquiry=result.data;
 
     // Storage is mandatory: never show success if the lead was not saved.
